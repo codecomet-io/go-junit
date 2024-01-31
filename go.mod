@@ -1,3 +1,3 @@
-module github.com/joshdk/go-junit
+module github.com/codecomet-io/go-junit
 
-go 1.12
+go 1.21
