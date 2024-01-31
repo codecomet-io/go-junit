@@ -8,10 +8,12 @@ package junit
 import "encoding/xml"
 
 type xmlNode struct {
-	XMLName xml.Name
-	Attrs   map[string]string `xml:"-"`
-	Content []byte            `xml:",innerxml"`
-	Nodes   []xmlNode         `xml:",any"`
+	XMLName     xml.Name
+	Attrs       map[string]string `xml:"-"`
+	Content     []byte            `xml:",innerxml"`
+	Nodes       []xmlNode         `xml:",any"`
+	OffsetStart int64             `xml:"-"`
+	OffsetEnd   int64             `xml:"-"`
 }
 
 func (n *xmlNode) Attr(name string) string {
@@ -20,10 +22,11 @@ func (n *xmlNode) Attr(name string) string {
 
 func (n *xmlNode) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	type nodeAlias xmlNode
+	n.OffsetStart = d.InputOffset()
 	if err := d.DecodeElement((*nodeAlias)(n), &start); err != nil {
 		return err
 	}
-
+	n.OffsetEnd = d.InputOffset()
 	content, err := extractContent(n.Content)
 	if err != nil {
 		return err

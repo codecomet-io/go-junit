@@ -160,6 +160,12 @@ type Test struct {
 	// SystemErr is textual error output for the test case. Usually output that is
 	// written to stderr.
 	SystemErr string `json:"stderr,omitempty" yaml:"stderr,omitempty"`
+
+	// OffsetStart is the byte offset at which this testcase can be found,
+	// within the JUnit XML doc.
+	OffsetStart int64
+	// OffsetEnd is the end of the testcase in the xml doc.
+	OffsetEnd int64
 }
 
 // Error represents an erroneous test result.
