@@ -6,6 +6,7 @@
 package junit
 
 import (
+	"maps"
 	"strconv"
 	"strings"
 	"time"
@@ -41,7 +42,7 @@ func ingestSuite(root xmlNode) Suite {
 			suite.Tests = append(suite.Tests, testcase)
 		case "properties":
 			props := ingestProperties(node)
-			suite.Properties = props
+			maps.Copy(suite.Properties, props)
 		case "system-out":
 			suite.SystemOut = string(node.Content)
 		case "system-err":
